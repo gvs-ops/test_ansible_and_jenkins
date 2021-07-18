@@ -1,0 +1,16 @@
+[web_servers]
+Web 		ansible_host=10.0.1.34
+
+[jenkins_servers]
+Jenkins 	ansible_host=10.0.1.31
+
+[web_centos_servers]
+Web1		ansible_host=192.168.10.193           owner=Vi
+Web2		ansible_host=192.168.10.194		 owner=Vasya
+
+[web_ubuntu_servers]
+Web3            ansible_host=192.168.10.192           owner=Petya
+
+[all_web:children]
+web_centos_servers
+web_ubuntu_servers

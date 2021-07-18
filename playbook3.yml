@@ -1,0 +1,19 @@
+---
+- name:    Remove Apach and Index file
+  hosts:   all_web
+  become:  yes
+
+  tasks:
+  
+  - name:  Remove Index file
+    ansible.builtin.file: path=/var/www/html/index.html state=absent
+
+  - block:  #========Block for RedHat========
+    - name:  Remove Apach in RedHat
+      yum:   name=httpd state=removed
+    when: ansible_os_family == "RedHat"
+
+  - block:  #========Block for Dibian========
+    - name:  Remove Apach in Debian
+      apt:   name=apache2  state=absent
+    when: ansible_os_family == "Debian"

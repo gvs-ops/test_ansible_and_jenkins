@@ -1,0 +1,3 @@
+---
+# vars file for delpoy_apache_web
+dst_file: /var/www/html

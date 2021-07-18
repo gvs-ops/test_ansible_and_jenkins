@@ -1,0 +1,33 @@
+---
+- name:             Work with error
+  hosts:            all_web
+ #  any_errors_fatal: yes
+  become:           yes
+
+  vars:
+   tekst: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          61663837336361376631386337636334353334376431323333353766353765663838616165386561
+          6137353436303137316433303430646337316363336431360a653937373066383536393930303130
+          64653638393864366362366531336566333030383966633833373063666664306239326362613764
+          6431303534613139610a386265396631653334373835323431386239626561663437633537663531
+          3336
+
+ 
+  tasks:
+  
+  - name:          Install package
+    yum: 
+     name:         treeeeeee
+     state:        latest
+    ignore_errors: yes
+    
+  - name:         Print Hellow World
+    shell:        echo "{{ tekst }}"
+    register:     output
+#    failed_when:  output.rc == 0   
+# failed_when:  "'Hellow' is output.stdout"
+ 
+  - name:         Print output
+    debug: 
+     var:         output

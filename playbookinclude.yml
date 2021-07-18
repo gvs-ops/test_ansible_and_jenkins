@@ -1,0 +1,13 @@
+---
+- name:   Test include
+  hosts:  all_web
+  become:   yes
+
+  vars:
+    dst_ubuntu: /home/gvs/test_include
+    dst_centos: /root/test_include  
+  
+  tasks: 
+
+  - include: remove_folder.yml
+

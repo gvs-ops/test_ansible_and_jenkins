@@ -1,0 +1,64 @@
+
+---
+- name:  Install Apach and copy index.html file
+  hosts: all_web
+  become: yes
+
+  vars:
+    srs_file: ./website
+    dst_file: /var/www/html
+  
+  tasks:
+
+  - block:        #========Bloch for RedHat========
+   
+    - name: Install apache in RedHat
+      yum: name=httpd state=latest
+      notify: Open 80 port in RedHat
+
+    - name: Start Webservice and enable autostart in RedHat
+      service: name=httpd state=started enabled=yes
+
+    when: ansible_os_family == "RedHat"
+ 
+  - block:        #========Bloch for Debian========
+
+    - name: Install apache in Debian
+      yum: name=apache2 state=latest
+      notify: Open 80 port in Debian
+
+    - name: Start Webservice and enable autostart in Debian
+      service: name=apache2 state=started enabled=yes
+
+    when: ansible_os_family == "Debian"
+
+  - name: Generate and copy Index.html
+    template: src={{ srs_file }}/index.j2 dest={{ dst_file }}/index.html
+    notify:
+        - Restart Apach for RedHat
+        - Restart Apach for Debian
+
+
+#  - name: Copy file to Web Servers in RedHat
+#    copy: src={{ item }} dest={{ dst_file }}
+#    with_fileglob: "{{ srs_file }}/*.*"
+#    notify: 
+#        - Restart Apach for RedHat
+#        - Restart Apach for Debian
+
+  handlers:
+
+  - name: Open 80 port in RedHat
+    shell: firewall-cmd --zone=public --permanent --add-service=http;  firewall-cmd --reload
+
+  - name: Restart Apach for RedHat
+    service: name=httpd state=restarted    
+    when: ansible_os_family == "RedHat"
+  
+  - name: Open 80 port in Debian
+    shell: ufw allow 'Apache';  ufw reload
+
+  - name: Restart Apach for Debian
+    service: name=apache2 state=restarted
+    when: ansible_os_family == "Debian"
+

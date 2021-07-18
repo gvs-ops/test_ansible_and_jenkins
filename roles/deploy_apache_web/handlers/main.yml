@@ -1,0 +1,16 @@
+---
+# handlers file for delpoy_apache_web
+- name: Open 80 port in RedHat
+  shell: firewall-cmd --zone=public --permanent --add-service=http; firewall-cmd --reload
+
+- name: Restart Apach for RedHat
+  service: name=httpd state=restarted
+  when: ansible_os_family == "RedHat"
+
+- name: Open 80 port in Debian
+  shell: ufw allow 'Apache';  ufw reload
+
+- name: Restart Apach for Debian
+  service: name=apache2 state=restarted
+  when: ansible_os_family == "Debian"
+

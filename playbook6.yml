@@ -1,0 +1,16 @@
+
+---
+- name:  Install Apach and copy index.html file
+  hosts: all_web
+  become: yes
+
+  roles:
+    - deploy_apache_web
+
+
+#  - name: Copy file to Web Servers in RedHat
+#    copy: src={{ item }} dest={{ dst_file }}
+#    with_fileglob: "{{ srs_file }}/*.*"
+#    notify: 
+#        - Restart Apach for RedHat
+#        - Restart Apach for Debian

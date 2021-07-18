@@ -1,0 +1,34 @@
+---
+- name:       Test work with variables
+  hosts:      all
+  become:     yes
+
+  vars:
+    message1: Hellow
+    message2: World!!!
+    secret:   sdfsdfRfs89ESF2
+  
+  tasks:
+  - debug:
+      var:    message1
+
+  - debug: 
+      msg:    "Secret world is {{ secret }}"
+
+  - debug:
+      msg:    "Owner this project is -->{{ owner }}<--"   
+ 
+  - set_fact: full_message="{{ message1 }} {{ message2 }} from {{ owner }}"
+
+  - debug:
+      var:    full_message
+
+  - debug: 
+      var:    ansible_os_family
+
+  - shell:    uptime
+    register: results
+  
+  - debug:
+      var:    results.stdout
+

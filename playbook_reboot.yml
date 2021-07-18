@@ -1,0 +1,12 @@
+---
+- name:    Reboot all web servers
+  hosts:   all_web
+  become:  yes
+
+
+  tasks:
+  - name: Reboot and wait 30 seconds
+    reboot:
+  
+  - name: Ping
+    ping:

@@ -1,0 +1,30 @@
+
+---
+- name:  Install Apach and copy index.html file
+  hosts: all_web
+  become: yes
+
+  vars:
+    srs_file: ./website/index.html 
+    dst_file: /var/www/html
+  
+  tasks:
+  - name: Install apach
+    yum: name=httpd state=latest
+
+  - name: Copy file to Web Servers
+    copy: src={{ srs_file }} dest={{ dst_file }}
+    notify: Restart Apach
+
+  - name: Start Webservice and enable autostart
+    service: name=httpd state=started enabled=yes
+    notify: Open 80 port and restart firewall
+
+  handlers:
+
+  - name: Open 80 port and restart firewall
+    shell: firewall-cmd --reload; firewall-cmd --zone=public --permanent --add-service=http
+
+  - name: Restart Apach
+    service: name=httpd state=restarted    
+    

@@ -1,0 +1,10 @@
+---
+
+- name:   Shutdown all Servers
+  hosts:  all
+  become: yes
+
+  tasks: 
+  
+  - name: Shutdownd Servers
+    shell: shutdown

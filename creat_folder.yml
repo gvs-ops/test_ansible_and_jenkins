@@ -1,0 +1,14 @@
+---
+- name: Creat folder in Ubuntu
+  ansible.builtin.file:
+    path: "{{ dst_ubuntu }}"
+    state: directory
+  when: ansible_os_family == "Debian"
+
+- name: Creat folder in Ubuntu
+  ansible.builtin.file:
+    path: "{{ dst_centos }}"
+    state: directory
+  when: ansible_os_family == "RedHat"
+
+

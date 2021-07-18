@@ -1,0 +1,23 @@
+---
+- name:   Test loop and until
+  hosts:  Web3
+  become: Yes
+
+  tasks:
+  - name:  Fist test Loop
+    debug: msg="Hellow {{ item }}"
+    loop:
+       - "Vi"
+       - "Vlad"
+       - "Aleksandr"
+       - "Nikolay"
+  - name:     Second test Until
+    shell:    echo -n "Z" >> myfile.txt && cat myfile.txt
+    register: output
+    delay:    2
+    retries:  10
+    until: output.stdout.find("ZZZZ") == false
+ 
+  - name: Print output
+    debug: 
+      var: output.stdout
